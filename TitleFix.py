@@ -1,7 +1,7 @@
 ﻿import re, os, datetime, docx
 from docx.shared import Pt
 
-def repl(pattern, replace):
+def repl(pattern, replace): # функция замены слов/фраз
     #Необходимо отсечь первую страницу документа по ключевому слову "Образовательные"
     all_paras = []
     for i in doc.paragraphs:
@@ -17,10 +17,8 @@ def repl(pattern, replace):
                     paras.text = re.sub(i, replace, paras.text)
                     log.write(str(datetime.datetime.now()) + ' В файле ' + path + 'внесены изменения:   ' + paras.text + '\n')
                 
-
 log = open('log.txt', 'a')
-log.write('\n\n\nЗАПУСК ПРИЛОЖЕНИЯ ---- ' + str(datetime.datetime.now()) + '\n\n')
-#path = os.getcwd()
+log.write('\n\n\nЗАПУСК ПРИЛОЖЕНИЯ ---- ' + str(datetime.datetime.now()) + '\n\n') # Заголовок Лога при старте
 
 # ПОИСК ФАЙЛОВ ФОРМАТА *.DOCX В ТЕКУЩЕЙ И НИЖНИХ ДИРЕКТОРИЯХ
 paths = []
@@ -30,7 +28,6 @@ for root, dirs, files in os.walk(folder):
     for file in files:
         if file.endswith('docx') and not file.startswith('~'):
             paths.append(os.path.join(root, file))
-
 
 for path in paths:
     doc = docx.Document(path)
@@ -45,6 +42,7 @@ for path in paths:
     for i in range(len(pattern)):
         repl(pattern[i], replace[i])
 
-    doc.save(path + '!!!.docx')  #- ПЕРЕЗАПИСЬ ИСХОДНЫХ ФАЙЛОВ
+    doc.save(path + '!!!.docx')  # СОЗДАНИЕ КОПИИ ФАЙЛА с отметкой "!!!"
+    #doc.save(path)  # ПЕРЕЗАПИСЬ ИСХОДНЫХ ФАЙЛОВ
 
 log.close()
